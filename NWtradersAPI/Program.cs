@@ -13,8 +13,18 @@ builder.Services.AddSwaggerGen();
 // Dependency Injektion
 builder.Services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("paikallinen")
-    //  builder.Configuration.GetConnectionString("pilvi")
+    // builder.Configuration.GetConnectionString("pilvi")
     ));
+
+// ------------- Cors määritys ------------
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("SalliKaikki",
+    builder => builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
 
 
 
@@ -26,6 +36,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("SalliKaikki");
 
 app.UseHttpsRedirection();
 

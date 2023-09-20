@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NWtradersAPI.Models;
+using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 
 namespace NWtradersAPI.Controllers
@@ -83,7 +84,82 @@ namespace NWtradersAPI.Controllers
             }
         }
 
+        // Uuden asiakkaan lisääminen
+        [HttpPost]
+        public ActionResult AddNew([FromBody] Customer asiakas)
+        {
+            try
+            {
+                db.Customers.Add(asiakas);
+                db.SaveChanges();
+                return Ok($"Added new Customer {asiakas.CompanyName}.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error happened: {ex.InnerException}.");
+            }
+        }
 
+        // Asiakkaan poistaminen
+        [HttpDelete("{id}")] // URL parametrina id eli pääavain
+        public ActionResult Remove(string id)
+        {
+                try
+                {
+                var poistettavaAsiakas = db.Customers.Find(id);
+                if (poistettavaAsiakas != null)
+                    {
+                        db.Customers.Remove(poistettavaAsiakas);
+                        db.SaveChanges();
+                        return Ok($"Customer {poistettavaAsiakas.CompanyName} was deleted.");
+                    }
+                    else
+                    {
+                        return NotFound($"No Customer found with id {id}");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Error happened: {ex.InnerException}.");
+                }
+            }
+
+        // Asiakkaan muokkaaminen
+        [HttpPut("{id}")] // URL parametrina id eli pääavain
+        public ActionResult Update(string id, [FromBody] Customer cust)
+        {
+            try
+            {
+                var muokattavaAsiakas = db.Customers.Find(id);
+                if (muokattavaAsiakas != null)
+                {
+                   
+                    muokattavaAsiakas.CustomerId = id; // Varmistetaan että id:tä ei muuteta
+                    muokattavaAsiakas.CompanyName = cust.CompanyName;
+                    muokattavaAsiakas.ContactName = cust.ContactName;
+                    muokattavaAsiakas.ContactTitle = cust.ContactTitle;
+                    muokattavaAsiakas.Address = cust.Address;
+                    muokattavaAsiakas.PostalCode = cust.PostalCode;
+                    muokattavaAsiakas.City = cust.City;
+                    muokattavaAsiakas.Country = cust.Country;
+                    muokattavaAsiakas.Phone = cust.Phone;
+                    muokattavaAsiakas.Fax = cust.Fax;
+                     
+                    db.SaveChanges();
+                    return Ok($"Customer {muokattavaAsiakas.CompanyName} was updated.");
+                }
+                else
+                {
+                    return NotFound($"No Customer found with id {id}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error happened: {ex.InnerException}.");
+            }
+        }
 
     }
 }
