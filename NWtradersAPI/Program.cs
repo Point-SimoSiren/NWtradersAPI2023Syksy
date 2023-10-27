@@ -10,14 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Dependency Injektion
+// Dependency Injektiolla välitetty tietokantatieto kontrollereille
 builder.Services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("paikallinen")
     // builder.Configuration.GetConnectionString("pilvi")
     ));
 
 // ------------- Cors määritys ------------
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("SalliKaikki",
@@ -25,7 +24,6 @@ builder.Services.AddCors(options =>
     .AllowAnyMethod()
     .AllowAnyHeader());
 });
-
 
 
 var app = builder.Build();
