@@ -10,10 +10,13 @@ namespace NWtradersAPI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
+        // Kannattaa esitellä tietokantakonteksti kertaalleen täällä päätasolla,
+        // niin metodeissa voi viitata suoraan db muuttujaan. Disposea ei tarvise tehdä.
         // Perinteinen tyyli:
         // private NorthwindContext db = new NorthwindContext();
 
         // Dependency Injektion tyyli:
+        // kts. myös program.cs injektion tekeminen ja appsettings.json connection string
         private NorthwindContext db;
         public CustomersController(NorthwindContext dbparam)
         {
