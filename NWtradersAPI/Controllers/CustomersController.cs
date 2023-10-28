@@ -12,10 +12,10 @@ namespace NWtradersAPI.Controllers
     {
         // Kannattaa esitellä tietokantakonteksti kertaalleen täällä päätasolla,
         // niin metodeissa voi viitata suoraan db muuttujaan. Disposea ei tarvise tehdä.
-        // Perinteinen tyyli:
+        // Perinteinen tyyli jota voi käyttää ihan hyvin tässä vaiheessa vielä:
         // private NorthwindContext db = new NorthwindContext();
 
-        // Dependency Injektion tyyli:
+        // Dependency Injektion tyyli joka neuvotaan React kurssin lopulla, mutta teimme sen jo nyt tunneilla:
         // kts. myös program.cs injektion tekeminen ja appsettings.json connection string
         private NorthwindContext db;
         public CustomersController(NorthwindContext dbparam)
